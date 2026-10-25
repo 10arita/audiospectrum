@@ -1,4 +1,5 @@
 import SwiftUI
+import SpectrumCore
 
 struct SpectrumCanvas: View {
     let bands: [Float]
@@ -10,7 +11,7 @@ struct SpectrumCanvas: View {
     var body: some View {
         Canvas { context, size in
             guard !bands.isEmpty, size.width > 0, size.height > 0 else { return }
-            let values = bands.map { min(1.0, max(0.0, Double($0) * sensitivity)) }
+            let values = SpectrumDisplayResponse.heights(for: bands, sensitivity: sensitivity)
             if showsGuides { drawGuides(context: &context, size: size) }
             let gradient = GraphicsContext.Shading.linearGradient(
                 Gradient(colors: palette.colors), startPoint: .zero,
